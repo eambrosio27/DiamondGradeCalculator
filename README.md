@@ -1,1 +1,1 @@
-# DiamondGradeCalculator.github.io
+# DiamondGradeCalculator
