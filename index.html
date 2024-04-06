@@ -48,27 +48,55 @@
         </tr>
         <tr>
             <td><input type="text" class="assignment-name"></td>
-            <td><input type="number" class="grade" min="0" max="100" oninput="calculateTotalGrade(this.parentNode.parentNode.parentNode)"></td>
-            <td><input type="number" class="weight" min="0" max="100" oninput="calculateTotalGrade(this.parentNode.parentNode.parentNode)"></td>
+            <td><input type="number" class="grade" min="0" max="100"></td>
+            <td><input type="number" class="weight" min="0" max="100"></td>
         </tr>
     </table>
     <button onclick="addRow(this.parentNode)">Add Assignment</button>
     <button onclick="deleteRow()">Delete Row</button>
     <button onclick="calculateTotalGrade(this.parentNode)">Calculate</button>
     <br><br>
-    Total Grade: <span id="totalGrade">0</span>%
+    Total Grade: <span id="totalGrade"></span>
 </div>
 
 <script>
     function calculateTotalGrade(container) {
         //From rapidtables: The weighted grade is equal to the sum of the product of the weights (w) in percent (%) times the grade (g):
         //Weighted grade = w1×g1+ w2×g2+ w3×g3+...
+        const table = container.querySelector(".gradeTable");
+        const rows = table.querySelectorAll("tr");
+        // const grades = [];
+        // const weights = [];
+        let totalGrade = 0;
+        let totalWeight = 0;
+        for(let i = 1; i < rows.length; i++){
+            const gradeIn = rows[i].querySelector(".grade");
+            const weightIn = rows[i].querySelector(".weight");
+            const g = parseFloat(gradeIn.value);
+            const w = parseFloat(weightIn.value);
+            if(gradeIn.value == '' || weightIn.value == ''){
+                alert("Please insert grade and weight values for all assignments!");
+                return;
+            }
+            if(isNaN(g) || isNaN(w) || g < 0 || g > 100 || w < 0 || w > 100){
+                alert("Please only insert numbers between 0-100");
+                return;
+            }
+            totalGrade += (g * w);
+            totalWeight += w;
+        }
+        if(totalWeight === 0){
+            alert("The sum of your inputted weights is 0 ");
+            return;
+        }
 
+        const calcGrade = (totalGrade/totalWeight).toFixed(2);
+        document.getElementById("totalGrade").innerText = calcGrade + "%";
     }
 
     function addRow(container) {
         const table = container.querySelector(".gradeTable");
-        const newRow = table.insertRow(table.rows.length - 1);
+        const newRow = table.insertRow(table.rows.length);
         const cells = ['assignment-name', 'grade', 'weight'];
         cells.forEach(cell => {
             const newCell = newRow.insertCell();
@@ -78,31 +106,23 @@
             if (cell === "grade" || cell === "weight") {
                 input.setAttribute("min", "0");
                 input.setAttribute("max", "100");
-                input.setAttribute("oninput", "calculateTotalGrade(this.parentNode.parentNode.parentNode)");
+        
             }
             newCell.appendChild(input);
         });
-        newRow.querySelector(".grade").addEventListener("input", () => calculateTotalGrade(container));
-        newRow.querySelector(".weight").addEventListener("input", () => calculateTotalGrade(container));
+        
     }
 
     function deleteRow() {
         const table = document.querySelector(".gradeTable");
         const rowCount = table.rows.length;
         if (rowCount > 2) {
-            table.deleteRow(rowCount - 2); // Delete the last row
-            calculateTotalGrade(document.querySelector(".grade-table-class"));
+            table.deleteRow(rowCount - 1); // Delete the last row
         } else {
             alert("Cannot delete row. At least one row must remain.");
         }
     }
     
-    function handleKeyPress(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            event.target.blur();
-        }
-    }
 </script>
 </body>
 </html>
