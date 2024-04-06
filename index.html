@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diamond Grade Calculator</title>
+<style>
+    .grade-table-class {
+        margin-bottom: 20px;
+    }
+    table {
+        border-collapse: collapse;
+        width: 50%;
+    }
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    th {
+        background-color: #6953be;
+    }
+</style>
+</head>
+<body>
+<h2>Diamond Grade Calculator</h2>
+<p>Welcome to the Diamond Grade Calculator! Use this tool to figure out your grade in your class and see how to properly allocate your time!</p>
+
+<div class="grade-table-class">
+    <h3>Current Grade Calculator</h3>
+    <p>Input the number of graded assignments (homework, midterms, final), what grade you recieved (in percentage) and how they are weighed in the class</p>
+    <table class="gradeTable">
+        <tr>
+            <th>Assignment Name</th>
+            <th>Grade (%)</th>
+            <th>Weight (%)</th>
+        </tr>
+        <tr>
+            <td><input type="text" class="assignment-name"></td>
+            <td><input type="number" class="grade" min="0" max="100" oninput="calculateTotalGrade(this.parentNode.parentNode.parentNode)"></td>
+            <td><input type="number" class="weight" min="0" max="100" oninput="calculateTotalGrade(this.parentNode.parentNode.parentNode)"></td>
+        </tr>
+    </table>
+    <button onclick="addRow(this.parentNode)">Add Assignment</button>
+    <button onclick="deleteRow()">Delete Row</button>
+    <button onclick="calculateTotalGrade(this.parentNode)">Calculate</button>
+    <br><br>
+    Total Grade: <span id="totalGrade">0</span>%
+</div>
+
+<script>
+    function calculateTotalGrade(container) {
+        //From rapidtables: The weighted grade is equal to the sum of the product of the weights (w) in percent (%) times the grade (g):
+        //Weighted grade = w1×g1+ w2×g2+ w3×g3+...
+
+    }
+
+    function addRow(container) {
+        const table = container.querySelector(".gradeTable");
+        const newRow = table.insertRow(table.rows.length - 1);
+        const cells = ['assignment-name', 'grade', 'weight'];
+        cells.forEach(cell => {
+            const newCell = newRow.insertCell();
+            const input = document.createElement("input");
+            input.setAttribute("type", cell === "grade" || cell === "weight" ? "number" : "text");
+            input.setAttribute("class", cell);
+            if (cell === "grade" || cell === "weight") {
+                input.setAttribute("min", "0");
+                input.setAttribute("max", "100");
+                input.setAttribute("oninput", "calculateTotalGrade(this.parentNode.parentNode.parentNode)");
+            }
+            newCell.appendChild(input);
+        });
+        newRow.querySelector(".grade").addEventListener("input", () => calculateTotalGrade(container));
+        newRow.querySelector(".weight").addEventListener("input", () => calculateTotalGrade(container));
+    }
+
+    function deleteRow() {
+        const table = document.querySelector(".gradeTable");
+        const rowCount = table.rows.length;
+        if (rowCount > 2) {
+            table.deleteRow(rowCount - 2); // Delete the last row
+            calculateTotalGrade(document.querySelector(".grade-table-class"));
+        } else {
+            alert("Cannot delete row. At least one row must remain.");
+        }
+    }
+    
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            event.target.blur();
+        }
+    }
+</script>
+</body>
+</html>
