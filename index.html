@@ -32,7 +32,7 @@
     }
 </style>
 </head>
-<body>
+
 <h2>Diamond Grade Calculator</h2>
 <p>Welcome to the Diamond Grade Calculator! Use this tool to figure out your grade in your class and see how to properly allocate your time!</p>
 
@@ -56,6 +56,22 @@
     <button onclick="calculateTotalGrade(this.parentNode)">Calculate</button>
     <br><br>
     Total Grade: <span id="totalGrade"></span>
+</div>
+
+<div class="final-table-class">
+    <h3>Final Grade Calculator</h3>
+    <p>Determine what you need on your final to get the grade you want! :D</p>
+    <label for = "currentGrade">Current Grade (%)</label>
+    <input type="number" id="currentGrade" min="0" max="100"><br><br>
+    <label for="desiredFinalGrade">Desired Final Grade (%):</label>
+    <input type="number" id="desiredFinalGrade" min="0" max="100"><br><br>
+    <label for="finalWeight">Weight of the Final (%):</label>
+    <input type="number" id="finalWeight" min="0" max="100"><br><br>
+    <button onclick="finalGradeCalculator()">Calculate Required Final Grade</button>
+    <br><br>
+    Required Final Grade: <span id="requiredFinalGrade"></span>
+
+
 </div>
 
 <script>
@@ -122,6 +138,29 @@
         }
     }
     
+    function finalGradeCalculator() {
+        // Get input values
+        var currGrade = parseFloat(document.getElementById("currentGrade").value);
+        if (isNaN(currGrade) || currGrade < 0 || currGrade > 100) {
+            alert("Please input valid current grade :)");
+            return;
+        }
+        var desiredFinalGrade = parseFloat(document.getElementById("desiredFinalGrade").value);
+        if (isNaN(desiredFinalGrade) || desiredFinalGrade < 0 || desiredFinalGrade > 100) {
+            alert("Please input valid desired final grade :(");
+            return;
+        }
+        var finalWeight = parseFloat(document.getElementById("finalWeight").value)/100;
+        if (isNaN(finalWeight) || finalGrade < 0 || finalGrade > 1) {
+            alert("Please input valid final weight :|");
+        }
+
+        // Calculate required final grade
+        var finalGrade = (desiredFinalGrade - ((1-finalWeight) * currGrade))/finalWeight;
+        // Display the result
+        document.getElementById("requiredFinalGrade").innerText = finalGrade.toFixed(2) + "%";
+
+    }
 </script>
 </body>
 </html>
