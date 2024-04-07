@@ -62,6 +62,22 @@
 <body>
 <h1>Diamond Grade Calculator</h1>
 <p>Welcome to the Diamond Grade Calculator! Use this tool to figure out your grade in your class and see how to properly allocate your time!</p>
+<div class="final-table-class">
+    <h2>Final Grade Calculator</h2>
+    <p>Determine what you need on your final to get the grade you want! :D</p>
+    <label for = "currentGrade">Current Grade (%)</label>
+    <input type="number" id="currentGrade" min="0" max="100"><br><br>
+    <label for="desiredFinalGrade">Desired Final Grade (%):</label>
+    <input type="number" id="desiredFinalGrade" min="0" max="100"><br><br>
+    <label for="finalWeight">Weight of the Final (%):</label>
+    <input type="number" id="finalWeight" min="0" max="100"><br><br>
+    <button id = "calcFinal" onclick="finalGradeCalculator()">Calculate Required Final Grade</button>
+    <br><br>
+    Required Final Grade: <span id="requiredFinalGrade"></span>
+
+
+</div>    
+    
 <h2>Current Grade Calculator</h2>
 <p>Input the number of graded assignments (homeworks, midterms, final), what grade you recieved (in percentage) and how they are weighed in the course.</p>
 <p>The result will be your current percentage in the given course!</p>
@@ -90,22 +106,6 @@
     <br><br>
     <button id = "newCourse" onclick="duplicateCourse(this.parentNode)">Add New Course</button>
     <button id = "delCourse" onclick="deleteCourse(this.parentNode)">Delete Course</button>
-</div>
-
-<div class="final-table-class">
-    <h3>Final Grade Calculator</h3>
-    <p>Determine what you need on your final to get the grade you want! :D</p>
-    <label for = "currentGrade">Current Grade (%)</label>
-    <input type="number" id="currentGrade" min="0" max="100"><br><br>
-    <label for="desiredFinalGrade">Desired Final Grade (%):</label>
-    <input type="number" id="desiredFinalGrade" min="0" max="100"><br><br>
-    <label for="finalWeight">Weight of the Final (%):</label>
-    <input type="number" id="finalWeight" min="0" max="100"><br><br>
-    <button id = "calcFinal" onclick="finalGradeCalculator()">Calculate Required Final Grade</button>
-    <br><br>
-    Required Final Grade: <span id="requiredFinalGrade"></span>
-
-
 </div>
 
 <script>
