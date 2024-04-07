@@ -7,8 +7,9 @@
 <style>
     body {
         background-image: linear-gradient(#FFFFFF,#13b9e8);
-
+  
         /* Additional styling starts below. */
+  
         font-family: 'Lexend Deca', sans-serif;
         width: 700px; 
         margin: auto;
@@ -16,29 +17,45 @@
 }
 
     .grade-table-class {
-        margin-bottom: 20px;
+        width: 400px;
+        height: 300px;
+        border: 3px solid black;
+        padding: 15px;
+        margin: auto;
     }
     table {
         border-collapse: collapse;
         width: 50%;
     }
     th, td {
-        border: 1px solid #dddddd;
+        border: 1px solid black;
         text-align: left;
         padding: 8px;
     }
     th {
         background-color: #6953be;
     }
+    #calcTotal{
+        background-color: #6953be; 
+        border: none;
+        color: black;
+        padding: 10px 15px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+    }
+    
 </style>
 </head>
 <body>
-<h2>Diamond Grade Calculator</h2>
+<h1>Diamond Grade Calculator</h1>
 <p>Welcome to the Diamond Grade Calculator! Use this tool to figure out your grade in your class and see how to properly allocate your time!</p>
-
+<h2>Current Grade Calculator</h2>
+<p>Input the number of graded assignments (homeworks, midterms, final), what grade you recieved (in percentage) and how they are weighed in the course.</p>
+<p>The result will be your current percentage in the given course!</p>
 <div class="grade-table-class">
-    <h3>Current Grade Calculator</h3>
-    <p>Input the number of graded assignments (homework, midterms, final), what grade you recieved (in percentage) and how they are weighed in the class</p>
+    <h3 contenteditable="true">Course *rename me*</h3>
     <table class="gradeTable">
         <tr>
             <th>Assignment Name</th>
@@ -51,14 +68,47 @@
             <td><input type="number" class="weight" min="0" max="100"></td>
         </tr>
     </table>
-    <button onclick="addRow(this.parentNode)">Add Assignment</button>
-    <button onclick="deleteRow()">Delete Row</button>
-    <button onclick="calculateTotalGrade(this.parentNode)">Calculate</button>
+    <button id="addAssignment" onclick="addRow(this.parentNode)">Add Assignment</button>
+    <button id="delRow" onclick="deleteRow()">Delete Row</button>
+    <!-- <button onclick="calculateTotalGrade(this.parentNode)">Calculate</button> -->
+    <button id = "resetin" onclick="resetIn(this.parentNode)">Reset</button>
     <br><br>
     Total Grade: <span id="totalGrade"></span>
+    <br><br>
+    <button id = "calcTotal" onclick="calculateTotalGrade(this.parentNode)">Calculate</button>
+    <br><br>
+    <button id = "newCourse" onclick="duplicateCourse(this.parentNode)">Add New Course</button>
+    <button id = "delCourse" onclick="deleteCourse(this.parentNode)">Delete Course</button>
 </div>
 
+
 <script>
+    //let courseId = 2;
+    function resetIn(container){
+        const inputs = container.querySelectorAll(".gradeTable input");
+        inputs.forEach(input =>{
+            input.value = "";
+        })
+        container.querySelector("#totalGrade").innerText = "";
+    }
+    function duplicateCourse(container){
+        //alert("Hello");
+        const duplicate = container.cloneNode(true);
+        container.parentNode.appendChild(duplicate);
+        resetIn(duplicate);
+        // const courseTitle = duplicate.querySelector("h3");
+        // courseTitle.textContent = "Course " + courseId;
+        // courseId++
+    }
+    function deleteCourse(container){
+        const courses = document.querySelectorAll(".grade-table-class");
+        if(courses.length > 1){
+            container.parentNode.removeChild(container);
+        }
+        else{
+            alert("Cannot delete course. At least one course must remain");
+        }
+    }
     function calculateTotalGrade(container) {
         //From rapidtables: The weighted grade is equal to the sum of the product of the weights (w) in percent (%) times the grade (g):
         //Weighted grade = w1×g1+ w2×g2+ w3×g3+...
@@ -73,6 +123,7 @@
             const weightIn = rows[i].querySelector(".weight");
             const g = parseFloat(gradeIn.value);
             const w = parseFloat(weightIn.value);
+            //edge cases
             if(gradeIn.value == '' || weightIn.value == ''){
                 alert("Please insert grade and weight values for all assignments!");
                 return;
@@ -90,7 +141,7 @@
         }
 
         const calcGrade = (totalGrade/totalWeight).toFixed(2);
-        document.getElementById("totalGrade").innerText = calcGrade + "%";
+        container.querySelector("#totalGrade").innerText = calcGrade + "%";
     }
 
     function addRow(container) {
