@@ -46,6 +46,16 @@
         font-size: 11px;
         font-weight: 600;
     }
+    #calcFinal{
+        background-color: #6953be; 
+        border: none;
+        color: black;
+        padding: 10px 15px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+    }
     
 </style>
 </head>
@@ -91,7 +101,7 @@
     <input type="number" id="desiredFinalGrade" min="0" max="100"><br><br>
     <label for="finalWeight">Weight of the Final (%):</label>
     <input type="number" id="finalWeight" min="0" max="100"><br><br>
-    <button onclick="finalGradeCalculator()">Calculate Required Final Grade</button>
+    <button id = "calcFinal" onclick="finalGradeCalculator()">Calculate Required Final Grade</button>
     <br><br>
     Required Final Grade: <span id="requiredFinalGrade"></span>
 
